@@ -1,0 +1,19 @@
+ASCII ART IN C PROJECT | DOCUMENTATION
+
+My goal in this project is to learn about different libraries I can use in C. I refuse to use python 
+to make this project because it is easier to do it there. 
+
+GOALS:
+- Learn libraries
+- Learn to code appropiately
+- Print an ASCII art of an image
+
+MY SIMPLE ALGORITHM
+- Define ASCII character values to know what characters to use for light intensity (@,#,%,*,.)
+- Make a grayscale of an image. This makes it easier to know how light levels needed to be mapped
+- Compute intensity value of each cell
+- Map intensity for each cell
+- Print the image
+
+
+
