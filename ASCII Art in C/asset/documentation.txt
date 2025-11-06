@@ -15,5 +15,4 @@ MY SIMPLE ALGORITHM
 - Map intensity for each cell
 - Print the image
 
-
-
+There's a ton of work needed to polish this simple program I made. Will update it once in a while.
