@@ -5,8 +5,8 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
-#include "./include/stb_image.h"
-#include "./include/stb_image_resize2.h"
+#include "../include/stb_image.h"
+#include "../include/stb_image_resize2.h"
 
 int main(){
 
@@ -16,7 +16,7 @@ int main(){
     char image_name[256];
 
     // Define ASCII characters (darkest to brightest)
-    char value[] = { ' ', '.', ':', '-', '=', '+', '*', 'o', 'O', '0', '#', '@', 'M', 'W', '&', '$', '%'};
+    char value[] = ".-~+=:;oaAOD0%&$B8MW#@";
     
     print_again:
 
@@ -50,8 +50,8 @@ int main(){
                 for (int i = 0; i < output_w; i++) {
                     int pixel_index = i + j * output_w;
                     int b = output_image[pixel_index];
-                    // Map grayscale value (0-255) to ASCII index (0-14)
-                    int ascii_index = (b * 17) / 255;
+                    // Map grayscale value (0-255) to ASCII index (0-20)
+                    int ascii_index = (b * 20) / 255;
                     printf("%c ", value[ascii_index]);
                 }
                 printf("\n");

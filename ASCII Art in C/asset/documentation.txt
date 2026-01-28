@@ -5,7 +5,7 @@ to make this project because it is easier to do it there.
 
 GOALS:
 - Learn libraries
-- Learn to code appropiately
+- Learn to code appropriately
 - Print an ASCII art of an image
 
 MY SIMPLE ALGORITHM
@@ -16,3 +16,8 @@ MY SIMPLE ALGORITHM
 - Print the image
 
 There's a ton of work needed to polish this simple program I made. Will update it once in a while.
+
+Fixes:
+- File location problem
+- Terminal size problem
+- Proper programming 
