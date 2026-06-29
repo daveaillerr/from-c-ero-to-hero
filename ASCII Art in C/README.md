@@ -26,6 +26,12 @@ This project reads an image file from disk, downscales it to fit the terminal, c
 
 ---
 
+## Demo
+
+![ASCII Art Converter running in the terminal](image.png)
+
+---
+
 ## Goals
 
 - Learn how to use external single-header C libraries (`stb_image`, `stb_image_resize2`)
@@ -84,17 +90,21 @@ Each pixel in the resulting buffer is a single `unsigned char` (0 = black, 255 =
 
 ### 3. Downscale to Terminal Size
 
-The image is resized so it fits within a reasonable terminal window. The divisors control the output dimensions:
+The terminal size is read at runtime using `GetConsoleScreenBufferInfo`, and the output dimensions are computed to fill the window while preserving the image's aspect ratio:
 
 ```c
-int output_w = width / 35;
-int output_h = height / 45;
+int term_cols = get_term_cols();
+int term_rows = get_term_rows();
+int output_w  = term_cols;
+int output_h  = (int)(output_w * ((double)height / width) * 0.45);
+if (output_h > term_rows - 6) output_h = term_rows - 6;
+
 stbir_resize_uint8_srgb(input_image, width, height, 0,
                          output_image, output_w, output_h, 0,
                          STBIR_1CHANNEL);
 ```
 
-> The width and height divisors are different to compensate for the terminal character aspect ratio (characters are taller than they are wide).
+> The `0.45` factor corrects for the terminal character aspect ratio — characters are roughly twice as tall as they are wide.
 
 ### 4. Compute & Map Pixel Intensity
 
@@ -115,10 +125,10 @@ The nested loop iterates row by row, printing each character and inserting a new
 
 ## Libraries
 
-| Library | Purpose | Source |
-|---------|---------|--------|
-| `stb_image.h` | Load and decode image files (PNG, JPG, BMP, etc.) into raw pixel data | [nothings/stb](https://github.com/nothings/stb) |
-| `stb_image_resize2.h` | Resize pixel buffers using high-quality resampling | [nothings/stb](https://github.com/nothings/stb) |
+| Library               | Purpose                                                               | Source                                          |
+| --------------------- | --------------------------------------------------------------------- | ----------------------------------------------- |
+| `stb_image.h`         | Load and decode image files (PNG, JPG, BMP, etc.) into raw pixel data | [nothings/stb](https://github.com/nothings/stb) |
+| `stb_image_resize2.h` | Resize pixel buffers using high-quality resampling                    | [nothings/stb](https://github.com/nothings/stb) |
 
 Both are **single-header libraries** — no external dependencies or linking required. Simply `#include` them with the appropriate `#define` before the include.
 
@@ -182,18 +192,18 @@ make clean
 
 ## Known Issues & Fixes
 
-| Issue | Status | Notes |
-|-------|--------|-------|
-| File location problem | In progress | Image must currently be in the same directory as the executable |
-| Terminal size problem | In progress | Output dimensions are hardcoded divisors, not dynamically read from terminal size |
-| Code cleanliness | In progress | `goto` used for loop control; to be refactored |
+| Issue                 | Status      | Notes                                                                                   |
+| --------------------- | ----------- | --------------------------------------------------------------------------------------- |
+| File location problem | In progress | Image must currently be in the same directory as the executable                         |
+| Terminal size problem | ✅ Fixed    | Output now scales dynamically to terminal width/height via `GetConsoleScreenBufferInfo` |
+| Code cleanliness      | In progress | `goto` used for loop control; to be refactored                                          |
 
 ---
 
 ## Future Improvements
 
 - [ ] Accept image path as a command-line argument (`./ascii_art path/to/image.png`)
-- [ ] Auto-detect terminal width/height using `GetConsoleScreenBufferInfo` (Windows) or `ioctl` (Unix)
+- [x] Auto-detect terminal width/height using `GetConsoleScreenBufferInfo` (Windows) or `ioctl` (Unix)
 - [ ] Support color ASCII art using ANSI escape codes
 - [ ] Cross-platform support (Linux/macOS)
 - [ ] Export ASCII output to a `.txt` file
