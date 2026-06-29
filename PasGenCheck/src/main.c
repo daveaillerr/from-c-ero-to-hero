@@ -87,8 +87,9 @@ int repeatProgram(){
         setColor(COLOR_YELLOW);
         printf("\n\n\tDo you want to try again? (Y/N): ");
         setColor(COLOR_RESET);
-        if (fgets(confirmationChoice, sizeof(confirmationChoice), stdin) != NULL);
-        confirmationChoice[strcspn(confirmationChoice, "\n")] = 0;
+        if (fgets(confirmationChoice, sizeof(confirmationChoice), stdin) != NULL){
+            confirmationChoice[strcspn(confirmationChoice, "\n")] = 0;
+        }
 
         if (strlen(confirmationChoice) == 1){
             char upperChoice = toupper(confirmationChoice[0]);
@@ -168,6 +169,7 @@ int generatePassword(){
         generatePassword();
     }
 
+    return 0;
 }
 
 int isPasswordLong(const char *password){
@@ -177,7 +179,7 @@ int isPasswordLong(const char *password){
 int isPasswordUp(const char *password){
     while (*password){
         if (isupper((unsigned char)*password)) return 1;
-        *password++;
+        password++;
     }
     return 0;
 }
@@ -185,7 +187,7 @@ int isPasswordUp(const char *password){
 int isPasswordDig(const char *password){
     while (*password){
         if (isdigit((unsigned char)*password)) return 1;
-        *password++;
+        password++;
     }
     return 0;
 }
@@ -193,7 +195,7 @@ int isPasswordDig(const char *password){
 int isPasswordSpecial(const char *password){
     while (*password){
         if (ispunct((unsigned char)*password)) return 1;
-        *password++;
+        password++;
     }
     return 0;
 }
@@ -201,7 +203,7 @@ int isPasswordSpecial(const char *password){
 int isPasswordwithSpace(const char *password){
     while(*password){
         if (isspace((unsigned char)*password)) return 1;
-        *password++; 
+        password++; 
     }
     return 0;
 }
@@ -294,8 +296,9 @@ int exitProgram(){
         setColor(COLOR_YELLOW);
         printf("\n\tDo you really want to exit? (Y/N): ");
         setColor(COLOR_RESET);
-        if (fgets(confirmationChoice, sizeof(confirmationChoice), stdin) != NULL);
-        confirmationChoice[strcspn(confirmationChoice, "\n")] = 0;
+        if (fgets(confirmationChoice, sizeof(confirmationChoice), stdin) != NULL){
+            confirmationChoice[strcspn(confirmationChoice, "\n")] = 0;
+        }
 
         if (strlen(confirmationChoice) == 1){
             char upperChoice = toupper(confirmationChoice[0]);
@@ -331,10 +334,11 @@ int exitProgram(){
 }
 
 int main(){
+    SetConsoleOutputCP(CP_UTF8);
     setlocale(LC_ALL, "en_US.UTF-8");
     srand(time(NULL));
 
-    char userChoice;
+    int userChoice;
 
     do{
         greet();
