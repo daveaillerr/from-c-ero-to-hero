@@ -1,37 +1,41 @@
-# PasGenCheck — Password Generator & Checker
+<div align="center">
 
-An interactive, color-coded console application written in C for generating cryptographically random passwords and checking the strength of existing ones. Features an animated terminal UI built with the Windows Console API.
+# PasGenCheck
 
----
+**Password Generator & Checker**
+Interactive console application for generating cryptographically random passwords and checking strength.
 
-## Table of Contents
+[![Language](https://img.shields.io/badge/Language-C-A8B9CC?style=for-the-badge&logo=c&logoColor=white)](https://en.cppreference.com/w/c)
+[![Build](https://img.shields.io/badge/Build-GNU%20Make-000000?style=for-the-badge&logo=gnu-make&logoColor=white)](https://www.gnu.org/software/make/)
+[![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://en.wikipedia.org/wiki/Microsoft_Windows)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-- [Overview](#overview)
-- [Features](#features)
-- [How It Works](#how-it-works)
-  - [Password Generation](#password-generation)
-  - [Password Checking](#password-checking)
-- [Strength Rules](#strength-rules)
-- [Console UI Design](#console-ui-design)
-- [Project Structure](#project-structure)
-- [Building & Running](#building--running)
-- [Known Limitations](#known-limitations)
-- [Future Improvements](#future-improvements)
+</div>
 
 ---
 
-## Overview
-
-PasGenCheck is a single-file C program that provides two utilities in one interactive menu:
-
-1. **Generate** — Produce a random, high-entropy password between 16 and 24 characters
-2. **Check** — Analyze an existing password against a set of security rules and report its weaknesses
-
-The program uses Windows Console API for colors and delays, giving it a polished, animated feel uncommon in console C programs.
+> An interactive, color-coded console application written in C for generating cryptographically random passwords and checking the strength of existing ones. Features an animated terminal UI built with the Windows Console API.
 
 ---
 
-## Features
+| # | Category | Topics Covered | Files |
+|---|----------|-----------------|-------|
+| 1 | [Core Source](#core-source) | Interactive UI, password generation, strength rules, console coloring | 1 |
+| 2 | [Build Configuration](#build-configuration) | GNU Make compilation and environment tasks | 1 |
+
+---
+
+## Core Source
+
+> Path: [`/src`](./src/)
+
+Contains the core application logic, rule checks, generator, and console UI rendering routines.
+
+| Project | Description |
+|---------|--------------|
+| `main.c` | Source code containing entry point, generator, strength checker, and UI animations |
+
+### Features
 
 | Feature | Description |
 |---------|-------------|
@@ -39,15 +43,13 @@ The program uses Windows Console API for colors and delays, giving it a polished
 | Strength Checking | Evaluates passwords against 5 security rules |
 | Color-coded Output | Green = pass, Red = fail, Cyan = info, Yellow = prompts |
 | Animated Printing | Characters print one at a time with `Sleep()` for a typewriter effect |
-| Loading Animation | Dots animate while "analyzing" or "generating" |
+| Loading Animation | Dots animate while analyzing or generating |
 | ASCII Banner | Stylized `PSGN` banner rendered in the console on startup |
 | Retry Loop | Prompts user to try again after each action without restarting |
 
----
+### How It Works
 
-## How It Works
-
-### Password Generation
+#### Password Generation
 
 ```
 Seed RNG with current time (srand(time(NULL)))
@@ -76,9 +78,9 @@ const char *digits    = "1234567890";
 const char *special   = "!@#$^&*()_+-=";
 ```
 
-### Password Checking
+#### Password Checking
 
-The checker uses an array of **function pointers** (`standardPassword` typedef) to apply each rule independently:
+The checker uses an array of function pointers (`standardPassword` typedef) to apply each rule independently:
 
 ```c
 typedef int (*standardPassword)(const char *);
@@ -94,11 +96,9 @@ standardPassword rules[] = {
 
 Each rule function receives the password string and returns `1` (pass) or `0` (fail). Results are printed with color-coded labels.
 
----
+### Strength Rules
 
-## Strength Rules
-
-A password is considered **strong** if it satisfies **all** of the following:
+A password is considered strong if it satisfies all of the following:
 
 | # | Rule | Function |
 |---|------|----------|
@@ -110,13 +110,11 @@ A password is considered **strong** if it satisfies **all** of the following:
 
 If any rule fails, the password is rated **Weak** and the specific failure is printed in red.
 
----
-
-## Console UI Design
+### Console UI Design
 
 The UI is built entirely using Windows Console API and Unicode box-drawing characters.
 
-### Color Scheme
+#### Color Scheme
 
 | Color | Usage |
 |-------|-------|
@@ -126,78 +124,14 @@ The UI is built entirely using Windows Console API and Unicode box-drawing chara
 | Yellow | User prompts, menu options |
 | Magenta | ASCII banner art |
 
-### Techniques Used
+#### Techniques Used
 
 - `SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color)` — set text color
 - `Sleep(ms)` — delays for animations and pacing
 - Unicode box-drawing characters (`╔`, `║`, `╚`, `═`, `┌`, `─`, `┐`) for bordered UI elements
 - `fflush(stdout)` — forces immediate character output for smooth animations
 
----
-
-## Project Structure
-
-```
-PasGenCheck/
-├── Makefile
-└── src/
-    └── main.c
-```
-
-All logic is contained in `src/main.c`, organized into focused functions:
-
-| Function | Responsibility |
-|----------|---------------|
-| `greet()` | Renders the startup banner and menu |
-| `generatePassword()` | Handles password generation flow |
-| `checkPassword()` | Handles password checking flow |
-| `exitProgram()` | Confirmation prompt before exit |
-| `repeatProgram()` | Y/N loop to retry the current action |
-| `isPasswordLong()` | Rule: minimum length |
-| `isPasswordUp()` | Rule: uppercase presence |
-| `isPasswordDig()` | Rule: digit presence |
-| `isPasswordSpecial()` | Rule: special character presence |
-| `isPasswordwithSpace()` | Rule: no whitespace |
-| `setColor()` | Wrapper for console color change |
-| `printWithDelay()` | Typewriter-effect printer |
-| `loadingAnimation()` | Animated dots loader |
-| `printSeparator()` | Prints a `═` separator line |
-
----
-
-## Building & Running
-
-### Prerequisites
-
-- GCC (MinGW recommended on Windows)
-- GNU Make
-- Windows OS (required for `windows.h` APIs)
-
-### Compile
-
-From the `PasGenCheck/` directory:
-
-```bash
-make
-```
-
-This produces `pas_gen_check.exe`.
-
-### Run
-
-```bash
-./pas_gen_check
-```
-
-### Clean
-
-```bash
-make clean
-```
-
----
-
-## Known Limitations
+### Known Limitations
 
 | Limitation | Notes |
 |------------|-------|
@@ -205,12 +139,94 @@ make clean
 | `rand()` seeding | Uses `srand(time(NULL))` — not cryptographically secure; sufficient for practice purposes |
 | No clipboard support | Generated passwords must be manually copied |
 
----
-
-## Future Improvements
+### Future Improvements
 
 - [ ] Cross-platform color support using ANSI escape codes
 - [ ] Password entropy score displayed alongside strength rating
 - [ ] Option to copy generated password to clipboard automatically
 - [ ] Custom character set selection for generation
 - [ ] Save generated passwords to an encrypted local file
+
+---
+
+## Build Configuration
+
+> Path: [`.`](./)
+
+Defines compilation scripts and workspace task automation.
+
+| Project | Description |
+|---------|--------------|
+| `Makefile` | Automates compilation and cleaning routines for the application |
+
+---
+
+## Tools and Requirements
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| [GCC (MinGW-w64)](https://www.mingw-w64.org/) | C99 or later | C compiler for Windows environment |
+| [GNU Make](https://www.gnu.org/software/make/) | 3.81 or later | Build automation tool |
+| Windows OS | Windows 7 or later | Required for Windows Console API (`windows.h`) |
+
+---
+
+## Concepts Practiced
+
+```
+Console API         ████████████████████  Windows console attributes, colors, and styling
+Function Pointers   ████████████████████  Implementing rules checking via callback arrays
+RNG Seeding         ███████████████░░░░░  Generating passwords using time-seeded rand()
+Animated Printing   ████████████████████  Typewriter effects and custom loading loaders
+```
+
+---
+
+## Repository Structure
+
+```
+PasGenCheck/
+├── src/
+│   └── main.c
+├── Makefile
+└── README.md  ← current file
+```
+
+---
+
+## Getting Started
+
+1. Set up a MinGW-w64 environment on Windows
+2. Clone this repository and navigate to the directory
+   ```bash
+   git clone https://github.com/USERNAME/REPO.git
+   cd PasGenCheck
+   ```
+3. Compile the application using the Makefile
+   ```bash
+   make
+   ```
+4. Run the generated executable
+   ```bash
+   ./pas_gen_check
+   ```
+5. Clean build files if necessary
+   ```bash
+   make clean
+   ```
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+
+Built with C and the Windows Console API.
+
+Star this repository if it was useful.
+
+</div>
