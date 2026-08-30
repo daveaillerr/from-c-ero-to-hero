@@ -19,7 +19,7 @@ Demonstrates socket programming, Winsock initialization, and connection multiple
 
 | # | Category | Topics Covered | Files |
 |---|----------|-----------------|-------|
-| 1 | [Core Source](#core-source) | Winsock initialization, connection multiplexing, select, cross-platform networking | 2 |
+| 1 | [Core Source](#core-source) | Winsock initialization, connection multiplexing, select, cross-platform networking | 1 |
 
 ---
 
@@ -27,12 +27,11 @@ Demonstrates socket programming, Winsock initialization, and connection multiple
 
 > Path: [`/src`](./src/)
 
-Contains the socket programming logic for both Windows and Linux environments.
+Contains the socket programming logic for Windows and cross-platform networking.
 
 | Project | Description |
 |---------|--------------|
-| `windows.c` | Winsock2 server setup, socket binding, connection acceptance, and I/O multiplexing with `select()` |
-| `linux.c` | Basic POSIX socket creation skeleton for Linux systems |
+| `windows.c` | Winsock2 server setup, socket binding, backend connection handshake, and bidirectional I/O multiplexing with `select()` |
 
 ### Architectural Flow
 
@@ -40,20 +39,14 @@ The Windows implementation (`windows.c`) executes the following operations:
 1. **Winsock Startup**: Calls `WSAStartup` to load the Windows Sockets DLL.
 2. **Port Binding**: Binds to port `3094` using the resolved address from `getaddrinfo`.
 3. **Connection Acceptance**: Enters a loop to accept incoming client connections.
-4. **I/O Multiplexing**: Sets up an `fd_set` and monitors both client and backend server sockets using the `select` function to forward traffic bidirectionally.
-
-### Known Limitations
-
-- The backend connection establishment (`connect_backendfd = connect();`) is currently incomplete and holds placeholder code.
-- Winsock dependencies make `windows.c` non-portable to Linux; `linux.c` is currently just a socket creation skeleton.
-- Multiplexing is currently limited to a single active client-backend pair per select loop.
+4. **Backend Connection**: Resolves and connects to the backend host (`127.0.0.1:8080`).
+5. **I/O Multiplexing**: Sets up an `fd_set` and monitors both client and backend sockets using `select()` to forward TCP traffic bidirectionally.
 
 ### Future Improvements
 
-- [ ] Complete the backend connection establishment (`connect_backendfd` logic).
-- [ ] Implement robust error handling for connection loss or timeouts.
-- [ ] Standardize the codebase to use cross-platform abstraction layers (e.g., matching POSIX sockets).
-- [ ] Add support for multiple concurrent client connections.
+- [x] Complete backend connection establishment (`connect` logic)
+- [x] Implement robust disconnection and timeout handling
+- [ ] Add support for multiple concurrent client connections
 
 ---
 
@@ -66,46 +59,18 @@ The Windows implementation (`windows.c`) executes the following operations:
 
 ---
 
-## Concepts Practiced
-
-```
-Winsock API         ████████████████████  WSAStartup, socket creation, and socket options
-I/O Multiplexing    ███████████████░░░░░  Socket monitoring and routing using select()
-TCP Handshake       ████████████████████  Binding, listening, and accepting client connections
-Cross-Platform      ██████████░░░░░░░░░░  Handling Win32 vs POSIX socket implementations
-```
-
----
-
-## Repository Structure
-
-```
-Reverse Proxy/
-├── src/
-│   ├── linux.c
-│   ├── windows.c
-│   └── windows.exe
-└── README.md  ← current file
-```
-
----
-
 ## Getting Started
 
-1. Clone this repository and navigate to the directory
+1. Clone this repository and navigate to the directory:
    ```bash
    git clone https://github.com/USERNAME/REPO.git
    cd "Reverse Proxy"
    ```
-2. Compile on Windows using GCC:
+2. Compile on Windows using GCC with Winsock library linked:
    ```bash
    gcc src/windows.c -o src/windows.exe -lws2_32
    ```
-3. Compile on Linux using GCC:
-   ```bash
-   gcc src/linux.c -o src/linux
-   ```
-4. Run the compiled proxy server:
+3. Run the compiled proxy server:
    ```bash
    ./src/windows.exe
    ```
@@ -125,3 +90,4 @@ Built with C socket API.
 Star this repository if it was useful.
 
 </div>
+

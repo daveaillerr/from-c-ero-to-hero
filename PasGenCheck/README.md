@@ -171,29 +171,6 @@ Defines compilation scripts and workspace task automation.
 
 ---
 
-## Concepts Practiced
-
-```
-Console API         ████████████████████  Windows console attributes, colors, and styling
-Function Pointers   ████████████████████  Implementing rules checking via callback arrays
-RNG Seeding         ███████████████░░░░░  Generating passwords using time-seeded rand()
-Animated Printing   ████████████████████  Typewriter effects and custom loading loaders
-```
-
----
-
-## Repository Structure
-
-```
-PasGenCheck/
-├── src/
-│   └── main.c
-├── Makefile
-└── README.md  ← current file
-```
-
----
-
 ## Getting Started
 
 1. Set up a MinGW-w64 environment on Windows
@@ -230,3 +207,4 @@ Built with C and the Windows Console API.
 Star this repository if it was useful.
 
 </div>
+

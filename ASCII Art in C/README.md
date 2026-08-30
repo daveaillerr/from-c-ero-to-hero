@@ -177,33 +177,6 @@ Defines the build instructions and automation for compiling the project executab
 
 ---
 
-## Concepts Practiced
-
-```
-Image Loading       ████████████████████  Decoding files with stb_image
-Image Resizing      ████████████████████  Downsampling with stb_image_resize2
-Console API         ███████████████░░░░░  Retrieving terminal dimensions via OS API
-ASCII Mapping       ████████████████████  Mapping pixel value ranges to character density
-```
-
----
-
-## Repository Structure
-
-```
-ASCII Art in C/
-├── include/
-│   ├── stb_image.h
-│   └── stb_image_resize2.h
-├── src/
-│   └── main.c
-├── Makefile
-├── image.png
-└── README.md  ← current file
-```
-
----
-
 ## Getting Started
 
 1. Install [GCC Compiler](https://gcc.gnu.org/)
@@ -240,3 +213,4 @@ Built with C and stb libraries.
 Star this repository if it was useful.
 
 </div>
+
